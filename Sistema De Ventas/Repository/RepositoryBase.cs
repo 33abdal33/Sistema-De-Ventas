@@ -17,24 +17,29 @@ namespace Sistema_De_Ventas.Repository
             return entity.Id;
         }
 
-        public Task DeleteAsync(int id)
+        public virtual async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var item = await GetAsync(id);
+            if(item is not null)
+            {
+                context.Set<TEntity>().Remove(item);
+                await context.SaveChangesAsync();
+            }
         }
 
-        public Task<ICollection<TEntity>> GetAsync()
+        public virtual async Task<ICollection<TEntity>> GetAsync()
         {
-            throw new NotImplementedException();
+            return await context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
-        public Task<TEntity> GetAsync(int id)
+        public virtual async Task<TEntity?> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await context.Set<TEntity>().FindAsync(id);
         }
 
-        public Task UpdateAsync(TEntity entity)
+        public virtual async Task UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            await context.SaveChangesAsync();
         }
     }
 }
